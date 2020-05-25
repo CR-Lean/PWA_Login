@@ -1,5 +1,4 @@
 <?php
-
 /* @var $this yii\web\View */
 /* @var $form yii\bootstrap\ActiveForm */
 /* @var $model \frontend\models\SignupForm */
@@ -7,31 +6,41 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = 'Signup';
+$this->title = 'Registro';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="site-signup">
-    <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>Please fill out the following fields to signup:</p>
+    <div class="signup-parent">
+        <h1 class="text-center mb-2"><?= Html::encode($this->title) ?></h1>
 
-    <div class="row">
-        <div class="col-lg-5">
-            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+        <p class="text-center"> Complete el formulario para registrarse en la plataforma: </p>
 
-                <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
+        <div class="row">
+            <div class="col-lg-5">
+                <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
 
-                <?= $form->field($model, 'full_name')->textInput() ?>
+                <div class="form-group signup-child-center">
+                    <?= $form->field($model, 'username')->textInput(['autofocus' => true]) ?>
 
-                <?= $form->field($model, 'email') ?>
+                    <?= $form->field($model, 'nombre')->label('Nombre *') ?>
+                    <?= $form->field($model, 'apellido')->label('Apellido *') ?>
 
-                <?= $form->field($model, 'password')->passwordInput() ?>
+                    <?= $form->field($model, 'email')->label('Email *'); ?>
 
-                <div class="form-group">
-                    <?= Html::submitButton('Signup', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
+                    <?= $form->field($model, 'password')->passwordInput()->label('Password *'); ?>
+                    <?= $form->field($model, 'showpw')->checkBox(['label' => 'Mostrar Contraseña', 'data-size' => 'small', 'class' => 'showPwSignup']) ?>
+
+                </div>
+                <div class="signup-child-center form-advice">
+                    Los campos marcados con * son obligatorios.
+                </div>
+                <div class="form-group signup-child-center">
+                    <?= Html::submitButton('Registrarse', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 </div>
 
-            <?php ActiveForm::end(); ?>
+                <?php ActiveForm::end(); ?>
+            </div>
         </div>
     </div>
 </div>

@@ -12,8 +12,10 @@ class SignupForm extends Model
 {
     public $username;
     public $email;
-    public $full_name;
+    public $nombre;
+    public $apellido;
     public $password;
+    public $showpw;
 
 
     /**
@@ -35,10 +37,16 @@ class SignupForm extends Model
 
             ['password', 'required', 'message' => 'Este campo es requerido.'],
             ['password', 'string', 'min' => 6],
+            
+            ['nombre', 'required', 'message' => 'Es necesario que ingrese su nombre.'],
+            ['nombre', 'string', 'min' => 6],
+            
+            ['apellido', 'required', 'message' => 'Es necesario que ingrese su apellido.'],
+            ['apellido', 'string', 'min' => 6],
 
             //Reglas Nombre Completo
-            ['full_name', 'string', 'min' => 10, 'max' => 70],
-            ['full_name', 'required', 'message' => 'Es necesario que ingrese su combre completo.'],
+//            ['full_name', 'string', 'min' => 10, 'max' => 70],
+//            ['full_name', 'required', 'message' => 'Es necesario que ingrese su combre completo.'],
         ];
     }
 
@@ -55,7 +63,8 @@ class SignupForm extends Model
 
         $user = new User();
         $user->username = $this->username;
-        $user->full_name = $this->full_name;
+        $user->nombre = $this->nombre;
+        $user->apellido = $this->apellido;
         $user->email = $this->email;
         $user->setPassword($this->password);
         $user->generateAuthKey();
@@ -88,7 +97,7 @@ class SignupForm extends Model
        return [
            'username' => 'Nombre de Usuario',
            'email' => 'Correo de Email',
-           'full_name' => 'Nombre y Apellido Completo',
+//           'full_name' => 'Nombre y Apellido Completo',
        ];
     }
 }
