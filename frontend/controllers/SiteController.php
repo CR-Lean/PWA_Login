@@ -47,6 +47,11 @@ class SiteController extends Controller
                         'allow' => true,
                         'roles' => ['admin'],
                     ],
+                    [
+                        'actions' => ['about','contact'],
+                        'allow' => true,
+                        'roles' => ['registrado'],
+                    ],
                 ],
             ],
             'verbs' => [
@@ -91,29 +96,11 @@ class SiteController extends Controller
      */
     public function actionMicuenta()
     {
-        $queryRol = (new \yii\db\Query())
-              ->select(['rol.id' , 'rol.name'])
-              ->from('user')
-              ->innerJoin('user_rol', 'user_rol.idUser=user.id')
-              ->innerJoin('rol', 'user_rol.idRol=rol.id')
-              ->where(['user.id' => Yii::$app->user->identity->id]);
-        $dataRol = $queryRol->all();
-
-        $rol=null;
-        if (YII::$app->user->can('organizer')) {
-            $rol="Organizador";
-        } else {
-            $rol="No tomo el check";
-        }
-
         //si el usuario no está registrado no permite visualizar el contenido
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
         } else {
-            return $this->render('micuenta', [
-                        'model' => $dataRol,
-                        'rolUser' => $rol,
-            ]);
+            return $this->render('micuenta');
         }
     }
 
