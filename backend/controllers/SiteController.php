@@ -73,17 +73,20 @@ class SiteController extends Controller
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
-
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login() && Yii::$app->user->can('admin')) {
-            return $this->goBack();
+        if ($model->load(Yii::$app->request->post()) && $model->login()) {
+          if (!Yii::$app->user->can('admin')) {
+              Yii::$app->user->logout();
+              return $this->goHome();
+          }
+          return $this->goBack();
         } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
+          $model->password = '';
+          return $this->render('login', [
+            'model' => $model,
+          ]);
         }
+
     }
 
     /**
