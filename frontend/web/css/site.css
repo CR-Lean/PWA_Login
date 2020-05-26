@@ -16,7 +16,7 @@ body {
 
 .footer {
     height: 60px;
-    background-color: #f5f5f5;
+    background-color: #BFE0F2;
     border-top: 1px solid #ddd;
     padding-top: 20px;
 }
@@ -99,6 +99,18 @@ a.desc:after {
 .nav li > form > button.logout {
     padding: 15px;
     border: none;
+}
+.navbar{
+  background-color: #20536B;
+}
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: #FFF;
+    background-color: #194255;
+}
+.table-hover tbody tr:hover td, .table-hover tbody tr:hover th {
+  background-color: #BFE0F2;
 }
 
 @media(max-width:767px) {
