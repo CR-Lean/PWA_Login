@@ -26,40 +26,79 @@ class SiteController extends Controller {
      * {@inheritdoc}
      */
     public function behaviors() {
-        return [
-            'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup', 'contact', 'about'],
-                'rules' => [
-                    [
-                        'allow' => true,
-                        'actions' => ['login', 'signup'],
-                        'roles' => ['?'],
-                    ],
-                    [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    [
-                        'actions' => ['about'],
-                        'allow' => true,
-                        'roles' => ['admin'],
-                    ],
-                    [
-                        'actions' => ['about', 'contact'],
-                        'allow' => true,
-                        'roles' => ['registrado'],
-                    ],
+//        return [
+//            'access' => [
+//                'class' => AccessControl::className(),
+//                'only' => ['logout', 'signup', 'contact', 'about'],
+//                'rules' => [
+//                    [
+//                        'allow' => true,
+//                        'actions' => ['login', 'signup'],
+//                        'roles' => ['?'],
+//                    ],
+//                    [
+//                        'actions' => ['logout'],
+//                        'allow' => true,
+//                        'roles' => ['@'],
+//                    ],
+//                    [
+//                        'actions' => ['about'],
+//                        'allow' => true,
+//                        'roles' => ['admin'],
+//                    ],
+//                    [
+//                        'actions' => ['about', 'contact'],
+//                        'allow' => true,
+//                        'roles' => ['registrado'],
+//                    ],
+//                ],
+//            ],
+//            'verbs' => [
+//                'class' => VerbFilter::className(),
+//                'actions' => [
+//                    'logout' => ['post'],
+//                ],
+//            ],
+//        ];
+
+        $behaviors['access'] = [
+            //utilizamos el filtro AccessControl
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'allow' => true,
+                    'actions' => ['login', 'signup', 'index', 'error'],
+                    'roles' => ['?'], // <----- guest 
                 ],
-            ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'logout' => ['post'],
+                        [
+                          'allow' => true,
+//                          'actions' => ['error', 'logout'],
+                          'roles' => ['@'],  // <----- user 
+                        ],
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                    'matchCallback' => function ($rule, $action) {
+//                        $module = Yii::$app->controller->module->id;
+//                        $module = "backend";
+//                        $module = Yii::$app->controller->module->id;
+                        $action = Yii::$app->controller->action->id;        //guardamos la accion (vista) que se intenta acceder
+                        $controller = Yii::$app->controller->id;            //guardamos el controlador del cual se consulta
+//                        $route = "$module/$controller/$action";
+                        $route = "$controller/$action";                     //generamos la ruta que se busca acceder
+
+                        $post = Yii::$app->request->post();
+                        //preguntamos si el usuario tiene los permisos para visitar el sitio
+                        if (\Yii::$app->user->can($route, ['post' => $post])) {
+//                            return $this->goHome();
+                            return true;
+                        }
+                    }
                 ],
             ],
         ];
+
+        return $behaviors;
     }
 
     /**
