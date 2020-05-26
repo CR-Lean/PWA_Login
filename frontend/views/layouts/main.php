@@ -34,19 +34,21 @@ AppAsset::register($this);
                     'class' => 'navbar-inverse navbar-fixed-top',
                 ],
             ]);
-            $menuItems = [
-                ['label' => 'Home', 'url' => ['/site/index']],
-                ['label' => 'About', 'url' => ['/site/about']],
-                ['label' => 'Contacto', 'url' => ['/site/contact']],
-            ];
+
+            $menuItems[] = ['label' => 'Home', 'url' => ['/site/index']];
+            $menuItems[] = ['label' => 'About', 'url' => ['/site/about']];
+            if (Yii::$app->user->can('site/contact')) {
+                    $menuItems[] = ['label' => 'Contacto', 'url' => ['/site/contact']];
+                }
             if (Yii::$app->user->isGuest) {
                 $menuItems = [
                     ['label' => 'Home', 'url' => ['/site/index']],
                     ['label' => 'Registrarse', 'url' => ['/site/signup']],
                     ['label' => 'Ingresar', 'url' => ['/site/login']],
-                    ['label' => 'GII', 'url' => ['/gii/default/index']],
+//                    ['label' => 'GII', 'url' => ['/gii/default/index']],
                 ];
             } else {
+                
                 $menuItems[] = ['label' => 'Perfil', 'url' => ['/site/micuenta']];
                 $menuItems[] = ['label' => 'Eventos', 'url' => ['/site/eventos']];
                 $menuItems[] = '<li>'
@@ -72,7 +74,7 @@ AppAsset::register($this);
                 ])
                 ?>
                 <?= Alert::widget() ?>
-<?= $content ?>
+                <?= $content ?>
             </div>
         </div>
 
@@ -80,11 +82,11 @@ AppAsset::register($this);
             <div class="container">
                 <p class="pull-left">&copy; <?= Html::encode(Yii::$app->name) ?> <?= date('Y') ?></p>
 
-                <!--<p class="pull-right"><?php // echo Yii::powered() ?></p>-->
+                <!--<p class="pull-right"><?php // echo Yii::powered()     ?></p>-->
             </div>
         </footer>
 
-<?php $this->endBody() ?>
+        <?php $this->endBody() ?>
     </body>
 </html>
 <?php $this->endPage() ?>
