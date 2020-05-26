@@ -88,6 +88,16 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
+    
+    /**
+     * Displays homepage.
+     *
+     * @return mixed
+     */
+    public function actionEventos()
+    {
+        return $this->render('eventos');
+    }
 
     /**
      * Permite visualizar sus datos a un usuario logueado.
