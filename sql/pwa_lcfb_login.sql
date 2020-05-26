@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-05-2020 a las 02:24:24
+-- Tiempo de generación: 26-05-2020 a las 07:08:44
 -- Versión del servidor: 10.3.16-MariaDB
 -- Versión de PHP: 7.3.7
 
@@ -42,7 +42,8 @@ CREATE TABLE `auth_assignment` (
 
 INSERT INTO `auth_assignment` (`item_name`, `user_id`, `created_at`) VALUES
 ('admin', 1, NULL),
-('organizador', 3, NULL);
+('organizador', 3, NULL),
+('usuario', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -71,7 +72,15 @@ INSERT INTO `auth_item` (`name`, `type`, `description`, `rule_name`, `data`, `cr
 ('evento/index', 2, 'Create a post', NULL, NULL, 1590380544, 1590380544),
 ('evento/update', 2, 'Update post', NULL, NULL, 1590380545, 1590380545),
 ('evento/view', 2, 'View post', NULL, NULL, 1590380545, 1590380545),
-('organizador', 1, 'Usuario que puede organizar eventos', NULL, NULL, 1590382997, 1590382997);
+('organizador', 1, 'Usuario que puede organizar eventos', NULL, NULL, 1590382997, 1590382997),
+('site/about', 2, 'Ver información de la plataforma', NULL, NULL, 1590466937, 1590466937),
+('site/contact', 2, 'Ver formulario de contacto', NULL, NULL, 1590466937, 1590466937),
+('site/error', 2, 'Error mostrado al acceder a un sitio prohibido', NULL, NULL, NULL, NULL),
+('site/eventos', 2, 'Ver listado de eventos', NULL, NULL, 1590466937, 1590466937),
+('site/index', 2, 'Ver el home del sitio', NULL, NULL, 1590466937, 1590466937),
+('site/logout', 2, 'Ver listado de eventos', NULL, NULL, 1590467310, 1590467310),
+('site/miCuenta', 2, 'Ver perfil', NULL, NULL, 1590466937, 1590466937),
+('usuario', 1, 'Usuario registrado comun', NULL, NULL, 1590466957, 1590466957);
 
 -- --------------------------------------------------------
 
@@ -94,7 +103,15 @@ INSERT INTO `auth_item_child` (`parent`, `child`) VALUES
 ('admin', 'organizador'),
 ('organizador', 'evento/create'),
 ('organizador', 'evento/index'),
-('organizador', 'evento/view');
+('organizador', 'evento/view'),
+('organizador', 'site/contact'),
+('organizador', 'usuario'),
+('usuario', 'site/about'),
+('usuario', 'site/error'),
+('usuario', 'site/eventos'),
+('usuario', 'site/index'),
+('usuario', 'site/logout'),
+('usuario', 'site/miCuenta');
 
 -- --------------------------------------------------------
 
@@ -122,6 +139,15 @@ CREATE TABLE `evento` (
   `descripcion` varchar(400) NOT NULL,
   `idUser` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `evento`
+--
+
+INSERT INTO `evento` (`idEvento`, `nombre`, `fecha`, `descripcion`, `idUser`) VALUES
+(2, 'Evento N1', '2020-05-04', 'Esto es un ejemplo de evento. Es el primero!', 3),
+(3, 'Evento Segundo. Viene después del primero', '2020-04-05', 'Este es otro ejemplo de evento. Es el segundo!', 3),
+(4, 'Evento tercero', '2020-02-03', 'Este es un ejemplo malo pero solo permite comprobar que el usuario es distinto.', 2);
 
 -- --------------------------------------------------------
 
@@ -237,7 +263,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT de la tabla `evento`
 --
 ALTER TABLE `evento`
-  MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `idEvento` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
