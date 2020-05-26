@@ -134,7 +134,7 @@ CREATE TABLE `auth_rule` (
 
 CREATE TABLE `evento` (
   `idEvento` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `titulo` varchar(50) NOT NULL,
   `fecha` date NOT NULL,
   `descripcion` varchar(400) NOT NULL,
   `idUser` int(11) NOT NULL
@@ -144,7 +144,7 @@ CREATE TABLE `evento` (
 -- Volcado de datos para la tabla `evento`
 --
 
-INSERT INTO `evento` (`idEvento`, `nombre`, `fecha`, `descripcion`, `idUser`) VALUES
+INSERT INTO `evento` (`idEvento`, `titulo`, `fecha`, `descripcion`, `idUser`) VALUES
 (2, 'Evento N1', '2020-05-04', 'Esto es un ejemplo de evento. Es el primero!', 3),
 (3, 'Evento Segundo. Viene después del primero', '2020-04-05', 'Este es otro ejemplo de evento. Es el segundo!', 3),
 (4, 'Evento tercero', '2020-02-03', 'Este es un ejemplo malo pero solo permite comprobar que el usuario es distinto.', 2);

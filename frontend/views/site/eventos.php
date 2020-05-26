@@ -26,7 +26,7 @@ if (Yii::$app->user->can('organizador')) {
                 <!-- Inicio Panel Evento-->
                 <div class="panel panel-info">
                     <div class="panel-heading text-white">
-                        <h5 class = "panel-title text-center"> <?= Html::encode("{$unEvento['nombre']}"); ?>: </h5>
+                        <h5 class = "panel-title text-center"> <?= Html::encode("{$unEvento['titulo']}"); ?>: </h5>
                     </div>
 
                     <!-- Data Eventos -->
