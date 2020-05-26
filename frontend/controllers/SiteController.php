@@ -15,27 +15,26 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use common\models\Evento;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
-{
+class SiteController extends Controller {
 
     /**
      * {@inheritdoc}
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup', 'contact', 'about'],
                 'rules' => [
                     [
-                      'allow' => true,
-                      'actions' => ['login', 'signup'],
-                      'roles' => ['?'],
+                        'allow' => true,
+                        'actions' => ['login', 'signup'],
+                        'roles' => ['?'],
                     ],
                     [
                         'actions' => ['logout'],
@@ -48,7 +47,7 @@ class SiteController extends Controller
                         'roles' => ['admin'],
                     ],
                     [
-                        'actions' => ['about','contact'],
+                        'actions' => ['about', 'contact'],
                         'allow' => true,
                         'roles' => ['registrado'],
                     ],
@@ -66,8 +65,7 @@ class SiteController extends Controller
     /**
      * {@inheritdoc}
      */
-    public function actions()
-    {
+    public function actions() {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -84,19 +82,31 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
-    
+
     /**
-     * Displays homepage.
+     * Displays pagina eventos.
      *
      * @return mixed
      */
-    public function actionEventos()
-    {
-        return $this->render('eventos');
+    public function actionEventos() {
+//             //creamos una query personalizada para obtener todos los eventos lanzados en la plataforma
+//             //ademas buscarmos al organizador asociado
+        $queryEventos = (new \yii\db\Query())
+//        $queryEventos = Evento::find()
+                ->select(['*', 'user.nombre as organizador']) //parametros seleccionados
+//                ->distinct('jugador.posicion')
+                ->from('evento')                                               //tabla
+                ->innerJoin('user', 'evento.idUser = user.id');             //relacion tablas
+//              ->where(['jugador.idclub' => $unClub->idClub])                  //condicion
+//              ->groupBy(['jugador.posicion']);                                //agrupamiento
+//                     
+        //obtenemos el array asociativo a partir de la query
+        $eventos = $queryEventos->all();
+
+        return $this->render('eventos', ['data' => $eventos]);
     }
 
     /**
@@ -104,8 +114,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionMicuenta()
-    {
+    public function actionMicuenta() {
         //si el usuario no está registrado no permite visualizar el contenido
         if (Yii::$app->user->isGuest) {
             return $this->goHome();
@@ -114,14 +123,12 @@ class SiteController extends Controller
         }
     }
 
-
     /**
      * Logs in a user.
      *
      * @return mixed
      */
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -137,13 +144,13 @@ class SiteController extends Controller
             ]);
         }
     }
+
     /**
      * Logs out the current user.
      *
      * @return mixed
      */
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();
@@ -154,8 +161,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionContact()
-    {
+    public function actionContact() {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
@@ -177,8 +183,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionAbout()
-    {
+    public function actionAbout() {
         return $this->render('about');
     }
 
@@ -187,8 +192,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionSignup()
-    {
+    public function actionSignup() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->signup()) {
             Yii::$app->session->setFlash('success', '¡Gracias por registrarte en la plataforma!. Para continuar, revisa tu correo para confirmar la dirección de email.');
@@ -205,8 +209,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionRequestPasswordReset()
-    {
+    public function actionRequestPasswordReset() {
         $model = new PasswordResetRequestForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -230,8 +233,7 @@ class SiteController extends Controller
      * @return mixed
      * @throws BadRequestHttpException
      */
-    public function actionResetPassword($token)
-    {
+    public function actionResetPassword($token) {
         try {
             $model = new ResetPasswordForm($token);
         } catch (InvalidArgumentException $e) {
@@ -256,8 +258,7 @@ class SiteController extends Controller
      * @throws BadRequestHttpException
      * @return yii\web\Response
      */
-    public function actionVerifyEmail($token)
-    {
+    public function actionVerifyEmail($token) {
         try {
             $model = new VerifyEmailForm($token);
         } catch (InvalidArgumentException $e) {
@@ -279,8 +280,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-    public function actionResendVerificationEmail()
-    {
+    public function actionResendVerificationEmail() {
         $model = new ResendVerificationEmailForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->sendEmail()) {
@@ -294,4 +294,5 @@ class SiteController extends Controller
                     'model' => $model
         ]);
     }
+
 }
