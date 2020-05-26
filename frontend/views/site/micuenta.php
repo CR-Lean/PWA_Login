@@ -8,33 +8,32 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 
 <h1 class="text-center"> Perfil: <?= Html::encode(Yii::$app->user->identity->username); ?> </h1>
-<h1 class="text-center"> Perfil: <?= Html::encode(Yii::$app->user->id); ?> </h1>
+<?php $model = Yii::$app->authManager->getRolesByUser(Yii::$app->user->identity->id);  ?>
 <div class='row'>
     <div class="col-sm-10 col-md-4 mt-4">
-        <!-- Inicio Card JugadorClub -->
         <div class="card">
-            <!-- Image JugadorClub -->
             <img class="card-img" src="" title="<?= Html::encode(Yii::$app->user->identity->username); ?>">
-            <!-- Image JugadorClub -->
 
-            <!-- Data JugadorClub -->
             <div class="card-body">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
-                            <th> Nombre Completo: </td>
-                            <td> <?= Html::encode(Yii::$app->user->identity->full_name); ?> </td>
+                          <th> Nombre: </td>
+                          <td> <?= Html::encode(Yii::$app->user->identity->nombre); ?> </td>
+                        </tr>
+
+                        <tr>
+                          <th> Apellido: </td>
+                          <td> <?= Html::encode(Yii::$app->user->identity->apellido); ?> </td>
                         </tr>
                         <tr>
-                            <th> Email: </td>
-                            <td> <?= Html::encode(Yii::$app->user->identity->email); ?> </td>
+                          <th> Email: </td>
+                          <td> <?= Html::encode(Yii::$app->user->identity->email); ?> </td>
                         </tr>
-                        <tr>
-                            <th> Roles: </td>
-                            <?php foreach ($model as $rol): ?>
-                              <td><?= Html::encode("{$rol['name']}")?></th>
-                            <?php endforeach; ?>
-                        </tr>
+                        <th> Roles: </td>
+                        <?php foreach ($model as $rol): ?>
+                          <td><?= Html::encode("{$rol->name}")?></th>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
             </div>
